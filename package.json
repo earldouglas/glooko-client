@@ -1,0 +1,27 @@
+{
+  "name": "glooko-client",
+  "description": "A JavaScript client for the Glooko API",
+  "type": "commonjs",
+  "scripts": {
+    "test": "mocha --recursive",
+    "fmt": "find src test -type f -name \"*.js\" -exec js-beautify -r --indent-size 2 {} \\;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/earldouglas/glooko-client.git"
+  },
+  "author": {
+    "name": "James Earl Douglas",
+    "email": "james@earldouglas.com",
+    "url": "https://earldouglas./"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/earldouglas/glooko-client/issues"
+  },
+  "homepage": "https://github.com/earldouglas/glooko-client",
+  "devDependencies": {
+    "js-beautify": "1.15.4",
+    "mocha": "11.7.1"
+  }
+}
