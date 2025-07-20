@@ -34,4 +34,28 @@ describe('glooko', () => {
     });
   });
 
+  describe('getGlookoCode', () => {
+    describe('(glookoCookie)', () => {
+      it('should return a glookoCode', function() {
+
+        if (GLOOKO_COOKIE === null) {
+          this.skip();
+        }
+
+        const glookoCodePromise =
+          glooko.getGlookoCode(GLOOKO_COOKIE);
+
+        return glookoCodePromise.then((glookoCode) => {
+
+          const regex = /^\w+-\w+-\d+$/;
+          const match = glookoCode.match(regex);
+
+          assert.ok(match);
+
+          GLOOKO_CODE = glookoCode;
+        });
+      });
+    });
+  });
+
 });
