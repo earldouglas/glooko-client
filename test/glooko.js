@@ -39,6 +39,7 @@ describe('glooko', () => {
       it('should return a glookoCode', function() {
 
         if (GLOOKO_COOKIE === null) {
+          console.log('GLOOKO_COOKIE is unset; skipping');
           this.skip();
         }
 
@@ -53,6 +54,34 @@ describe('glooko', () => {
           assert.ok(match);
 
           GLOOKO_CODE = glookoCode;
+        });
+      });
+    });
+  });
+
+  describe('getTdi', () => {
+    describe('(1970-01-01)', () => {
+      it('should return the tdi', function() {
+
+        if (GLOOKO_COOKIE === null) {
+          console.log('GLOOKO_COOKIE is unset; skipping');
+          this.skip();
+        }
+
+        if (GLOOKO_CODE === null) {
+          console.log('GLOOKO_CODE is unset; skipping');
+          this.skip();
+        }
+
+        const tdiPromise =
+          glooko.getTdi(GLOOKO_COOKIE, GLOOKO_CODE, '1970-01-01');
+
+        return tdiPromise.then((tdi) => {
+
+          const expected = 0;
+          const obtained = tdi;
+
+          assert.equal(expected, obtained);
         });
       });
     });

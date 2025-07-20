@@ -25,7 +25,7 @@
 
   const getGlookoCode = (glookoCookie) => {
 
-    const options = {
+    const fetchOptions = {
       method: 'GET',
       headers: {
         Accept: 'application/json; charset=UTF-8',
@@ -33,14 +33,14 @@
     };
 
     if (glookoCookie) {
-      options.headers['Cookie'] = glookoCookie;
+      fetchOptions.headers['Cookie'] = glookoCookie;
     } else {
-      options.credentials = 'include';
+      fetchOptions.credentials = 'include';
     }
 
     return fetch(
       'https://us.api.glooko.com/api/v3/session/users',
-      options,
+      fetchOptions,
     ).then((response) =>
       response.json()
     ).then((responseJson) =>
@@ -48,9 +48,40 @@
     );
   };
 
+  const getTdi = (glookoCookie, glookoCode, dateString) => {
+
+    const startDate = `${dateString}T00:00:00.000Z`;
+    const endDate = `${dateString}T23:59:59.999Z`;
+
+    const url = `https://us.api.glooko.com/api/v3/graph/statistics/overall?patient=${glookoCode}&startDate=${startDate}&endDate=${endDate}&includeInsulin=true`;
+      
+    const fetchOptions = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json; charset=UTF-8',
+      },
+    };
+
+    if (glookoCookie) {
+      fetchOptions.headers['Cookie'] = glookoCookie;
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(
+      url,
+      fetchOptions,
+    ).then((response) =>
+      response.json()
+    ).then((responseJson) =>
+      responseJson.totalInsulinPerDay
+    );
+  };
+
   const exports = {
     getGlookoCookie: getGlookoCookie,
     getGlookoCode: getGlookoCode,
+    getTdi: getTdi,
   };
 
   if (typeof module !== 'undefined') {
