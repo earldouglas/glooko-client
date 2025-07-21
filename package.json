@@ -2,6 +2,7 @@
   "name": "glooko-client",
   "description": "A JavaScript client for the Glooko API",
   "type": "commonjs",
+  "main": "src/glooko.js",
   "scripts": {
     "test": "mocha --recursive",
     "fmt": "find src test -type f -name \"*.js\" -exec js-beautify -r --indent-size 2 {} \\;"
