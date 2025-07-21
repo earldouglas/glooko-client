@@ -78,30 +78,7 @@
     );
   };
 
-  function getBoluses(glookoCookie, glookoCode) {
-
-    const localDate = (timestampISOString, offsetString) => {
-
-      const offsetRegex = /^([+-])(\d\d):(\d\d)$/;
-
-      // HACK: fix the incorrect time zone provided by Glooko
-      const offsetGroups =
-        offsetString === "+00:00" ?
-        "-07:00".match(offsetRegex) :
-        offsetString.match(offsetRegex);
-
-      const offsetSign = offsetGroups[1] === '+' ? -1 : 1;
-      const offsetHours = Number(`${offsetGroups[2]}`)
-      const offsetMins = Number(`${offsetGroups[3]}`)
-
-      const totalOffsetInMillis =
-        offsetSign * (offsetHours * 60 + offsetMins) * 60 * 1000;
-
-      const offsetDate = new Date(timestampISOString);
-      offsetDate.setTime(offsetDate.getTime() + totalOffsetInMillis);
-
-      return offsetDate;
-    };
+  const getBoluses = (glookoCookie, glookoCode) => {
 
     const twoDaysAgo = new Date().getTime() - (2 * 24 * 60 * 60 * 1000);
     const limit = Math.ceil(((new Date()).getTime() - twoDaysAgo) / (1000 * 60 * 5));
@@ -129,23 +106,8 @@
       fetchOptions,
     ).then((response) =>
       response.json()
-    ).then((responseJson) =>
-      responseJson
-      .normalBoluses
-      .map((x) => {
-
-        const timestamp =
-          localDate(x.pumpTimestamp, x.pumpTimestampUtcOffset)
-          .toISOString();
-
-        return {
-          eventType: 'Bolus',
-          insulin: x.insulinDelivered,
-          'created_at': timestamp,
-        };
-      })
     );
-  }
+  };
 
   const exports = {
     getGlookoCookie: getGlookoCookie,
