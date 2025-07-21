@@ -60,13 +60,19 @@
   const getDateStrings = () => {
 
     const getYYYY = (date) =>
-      (new Intl.DateTimeFormat('en-US', { year: 'numeric' })).format(date);
+      (new Intl.DateTimeFormat('en-US', {
+        year: 'numeric'
+      })).format(date);
 
     const getMM = (date) =>
-      (new Intl.DateTimeFormat('en-US', { month: '2-digit' })).format(date);
+      (new Intl.DateTimeFormat('en-US', {
+        month: '2-digit'
+      })).format(date);
 
     const getDD = (date) =>
-      (new Intl.DateTimeFormat('en-US', { day: '2-digit' })).format(date);
+      (new Intl.DateTimeFormat('en-US', {
+        day: '2-digit'
+      })).format(date);
 
 
     const nowDate = new Date();
@@ -111,25 +117,25 @@
 
       const tdiPromises =
         getDateStrings()
-          .map((dateString) =>
-            window
-              .glookoClient
-              .getTdi(null, glookoCode, dateString)
-              .then((tdi) => {
-                return {
-                  date: dateString,
-                  tdi: tdi,
-                };
-              })
-          );
+        .map((dateString) =>
+          window
+          .glookoClient
+          .getTdi(null, glookoCode, dateString)
+          .then((tdi) => {
+            return {
+              date: dateString,
+              tdi: tdi,
+            };
+          })
+        );
 
       Promise
         .all(tdiPromises)
         .then((values) =>
           waitForPanel()
-            .then((panel) =>
-              showTdi(values)
-            )
+          .then((panel) =>
+            showTdi(values)
+          )
         );
 
     });

@@ -1,4 +1,4 @@
-const glooko = require('../src/glooko.js');
+const glookoClient = require('../src/glooko.js');
 const assert = require('assert');
 
 var GLOOKO_COOKIE = null;
@@ -19,7 +19,7 @@ describe('glooko', () => {
         const glookoPassword = process.env['GLOOKO_PASSWORD'];
 
         const glookoCookiePromise =
-          glooko.getGlookoCookie(glookoEmail, glookoPassword);
+          glookoClient.getGlookoCookie(glookoEmail, glookoPassword);
 
         return glookoCookiePromise.then((glookoCookie) => {
 
@@ -44,7 +44,7 @@ describe('glooko', () => {
         }
 
         const glookoCodePromise =
-          glooko.getGlookoCode(GLOOKO_COOKIE);
+          glookoClient.getGlookoCode(GLOOKO_COOKIE);
 
         return glookoCodePromise.then((glookoCode) => {
 
@@ -74,7 +74,7 @@ describe('glooko', () => {
         }
 
         const tdiPromise =
-          glooko.getTdi(GLOOKO_COOKIE, GLOOKO_CODE, '1970-01-01');
+          glookoClient.getTdi(GLOOKO_COOKIE, GLOOKO_CODE, '1970-01-01');
 
         return tdiPromise.then((tdi) => {
 
@@ -83,6 +83,37 @@ describe('glooko', () => {
 
           assert.equal(expected, obtained);
         });
+      });
+    });
+  });
+
+  describe('getBoluses', () => {
+    describe('(glookoCookie, glookoCookie)', () => {
+      it('should return boluses', function() {
+
+        if (process.env['TEST_GLOOKO_AUTHN'] === undefined) {
+          console.log('TEST_GLOOKO_AUTHN is unset; skipping');
+          this.skip();
+        }
+
+        const glookoEmail = process.env['GLOOKO_EMAIL'];
+        const glookoPassword = process.env['GLOOKO_PASSWORD'];
+
+        return glookoClient
+          .getGlookoCookie(glookoEmail, glookoPassword)
+          .then((glookoCookie) => {
+
+            return glookoClient
+              .getGlookoCode(glookoCookie)
+              .then((glookoCode) => {
+
+                return glookoClient
+                  .getBoluses(glookoCookie, glookoCode)
+                  .then((boluses) => {
+                    assert.ok(Array.isArray(boluses));
+                  });
+              });
+          });
       });
     });
   });
